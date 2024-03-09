@@ -4,7 +4,6 @@
  * This generated file contains a sample Java application project to get you started.
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.6/userguide/building_java_projects.html in the Gradle documentation.
  */
-
 plugins {
     java
     id("org.springframework.boot") version "3.2.2"
@@ -12,24 +11,29 @@ plugins {
 }
 
 repositories {
-    // Use Maven Central for resolving dependencies.
+    maven {
+        url = uri("https://dl.bintray.com/alfa-laboratory/maven-releases/")
+    }
+    maven {
+        url = uri("https://jcenter.bintray.com/")
+    }
     mavenCentral()
 }
 
 dependencies {
-    // Use JUnit Jupiter for testing.
-    testImplementation(libs.junit.jupiter)
-
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
+    compileOnly("ru.alfabank.tests:akita:4.0.0")
     // This dependency is used by the application.
     implementation(libs.guava)
-
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-web")
+
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    // Use JUnit Jupiter for testing.
+    testImplementation(libs.junit.jupiter)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
