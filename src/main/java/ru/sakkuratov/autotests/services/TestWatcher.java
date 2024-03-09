@@ -19,7 +19,7 @@ public class TestWatcher {
     @Autowired
     private ApplicationEventPublisher publisher;
 
-    private HttpHeaders headers = new HttpHeaders();
+    private final HttpHeaders headers = new HttpHeaders();
 
     @PostConstruct
     public void init() {

@@ -1,10 +1,12 @@
 package ru.sakkuratov.autotests.events;
 
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEvent;
 import ru.sakkuratov.autotests.models.CucumberTask;
 
+@Getter
 public class TestFinishedEvent extends ApplicationEvent {
 
     private static final Logger logger = LoggerFactory.getLogger(TestFinishedEvent.class);
@@ -16,7 +18,4 @@ public class TestFinishedEvent extends ApplicationEvent {
         logger.debug("Event created: Test finished event");
     }
 
-    public String getResultMessage() {
-        return this.resultMessage;
-    }
 }
