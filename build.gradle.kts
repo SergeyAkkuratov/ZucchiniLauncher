@@ -21,11 +21,12 @@ repositories {
 }
 
 dependencies {
-    compileOnly("ru.alfabank.tests:akita:4.0.0")
     // This dependency is used by the application.
     implementation(libs.guava)
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("io.cucumber:cucumber-java:7.15.0")
+    implementation("io.qameta.allure:allure-cucumber7-jvm:2.25.0")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

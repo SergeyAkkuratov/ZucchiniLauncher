@@ -1,44 +1,52 @@
 package ru.sakkuratov.autotests.controllers;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.sakkuratov.autotests.models.TestParameters;
 import ru.sakkuratov.autotests.services.StabSystemTaskService;
 import ru.sakkuratov.autotests.services.StabTestWatcherService;
+import ru.sakkuratov.autotests.services.TestWatcher;
 
-import java.util.Map;
+import static ru.sakkuratov.autotests.helpers.CommonHelpers.getStackTrace;
 
 @RestController
 public class TaskController {
-    @Autowired
-    private StabTestWatcherService testWatcher;
-    @Autowired
-    private StabSystemTaskService systemTaskService;
-
     private static final HttpHeaders headers = new HttpHeaders();
 
     static {
         headers.setContentType(MediaType.APPLICATION_JSON);
     }
 
+    @Autowired
+    private TestWatcher testWatcher;
+    @Autowired
+    private StabTestWatcherService stabTestWatcher;
+    @Autowired
+    private StabSystemTaskService systemTaskService;
+
     @PostMapping("task/add")
-    public ResponseEntity<Object> taskAdd(@RequestBody String body) {
-        Map<String, String> responseBody = testWatcher.addTask(body);
-        return ResponseEntity.accepted().headers(headers).body(responseBody);
+    public ResponseEntity taskAdd(@RequestBody String body) {
+        try {
+            TestParameters parameters = new ObjectMapper().readValue(body, TestParameters.class);
+            return testWatcher.addTask(parameters);
+        } catch (Exception ex) {
+            return ResponseEntity.internalServerError().body("Test didn't launch: " + getStackTrace(ex));
+        }
     }
 
     @GetMapping("tasks")
     public ResponseEntity<Object> getStatus() {
-        Object result = testWatcher.getStatus(null);
+        Object result = stabTestWatcher.getStatus(null);
         return ResponseEntity.ok().headers(headers).body(result);
     }
 
     @GetMapping("tasks/{id}")
     public ResponseEntity<Object> getStatus(@PathVariable String id) {
-        Object result = testWatcher.getStatus(id);
+        Object result = stabTestWatcher.getStatus(id);
         return ResponseEntity.ok().headers(headers).body(result);
     }
 }
