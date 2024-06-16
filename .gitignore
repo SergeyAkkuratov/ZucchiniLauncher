@@ -1,6 +1,9 @@
 # JetBrains IDEA project settings folder
 .idea
 
+# VSCode project settings
+.VSCode
+
 # Compiled class file
 *.class
 
@@ -31,3 +34,7 @@ replay_pid*
 
 # Ignore Gradle build output directory
 build
+bin
+
+# Ignore test results
+allure-results
