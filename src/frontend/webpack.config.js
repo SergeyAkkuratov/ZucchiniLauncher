@@ -10,7 +10,7 @@ module.exports = {
         main: path.resolve(__dirname, "./src/index.tsx"),
     },
     output: {
-        path: path.resolve(__dirname, "./dist"),
+        path: path.resolve(__dirname, "../resources/static"),
         filename: "[name].bundle.js",
         clean: true,
     },

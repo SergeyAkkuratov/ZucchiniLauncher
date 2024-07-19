@@ -1,14 +1,29 @@
 import React from "react";
+import { Card, Stack } from "react-bootstrap";
+import TaskTable from "../components/TaskTable/TaskTable";
+
 
 export default function Main() {
     return (
         <>
-            <>
-                <div className="alert alert-dismissible alert-warning" data-testid="warning">
-                    <h4 className="alert-heading">Warning!</h4>
-                    <p className="mb-0">While you aren't sign in, you couldn't use this application!</p>
+            <Stack gap={2}>
+                <div className="p-2">
+                    <Card border="success">
+                        <Card.Header>Running Tasks</Card.Header>
+                        <Card.Body>
+                            <TaskTable type={"running"} />
+                        </Card.Body>
+                    </Card>
                 </div>
-            </>
+                <div className="p-2">
+                    <Card border="warning">
+                        <Card.Header>Queued Tasks</Card.Header>
+                        <Card.Body>
+                            <TaskTable type={"queued"} />
+                        </Card.Body>
+                    </Card>
+                </div>
+            </Stack>
         </>
     );
 }

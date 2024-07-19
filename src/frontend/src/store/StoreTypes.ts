@@ -16,5 +16,6 @@ export interface Task {
 }
 
 export interface TaskState {
-    tasks: Task[];
+    running: Task[];
+    queued: Task[];
 }

@@ -4,21 +4,102 @@ import { useDispatch, useSelector } from "react-redux";
 import { Task, TaskState } from "./StoreTypes";
 
 export const initialTaskState: TaskState = {
-    tasks: []
+    running: [
+        {
+            id: "TEST",
+            priority: 1,
+            parameters: {
+                priority: "1",
+                glue: "test",
+                threads: "1",
+                plugin: [
+                    "test"
+                ],
+                featuresPath: "features/test.feature",
+                owner: "Me",
+                tags: "@TEST",
+                timeout: "60m"
+            }
+        },
+        {
+            id: "TEST2",
+            priority: 2,
+            parameters: {
+                priority: "2",
+                glue: "test",
+                threads: "1",
+                plugin: [
+                    "test"
+                ],
+                featuresPath: "features/test2.feature",
+                owner: "Me",
+                tags: "@TEST2",
+                timeout: "60m"
+            }
+        }
+    ],
+    queued: [
+        {
+            id: "TEST",
+            priority: 1,
+            parameters: {
+                priority: "1",
+                glue: "test",
+                threads: "1",
+                plugin: [
+                    "test"
+                ],
+                featuresPath: "features/test.feature",
+                owner: "Me",
+                tags: "@TEST",
+                timeout: "60m"
+            }
+        },
+        {
+            id: "TEST2",
+            priority: 2,
+            parameters: {
+                priority: "2",
+                glue: "test",
+                threads: "1",
+                plugin: [
+                    "test"
+                ],
+                featuresPath: "features/test2.feature",
+                owner: "Me",
+                tags: "@TEST2",
+                timeout: "60m"
+            }
+        }
+    ]
 };
 
 export const taskSlice = createSlice({
     name: "Task",
     initialState: initialTaskState,
     reducers: {
-        addTask: (state, action: PayloadAction<Task>) => {
-            state.tasks.push(action.payload);
+        addRunningTask: (state, action: PayloadAction<Task>) => {
+            state.running.push(action.payload);
+        },
+        addQueuedTask: (state, action: PayloadAction<Task>) => {
+            state.queued.push(action.payload);
+        },
+        setRunningTasks: (state, action: PayloadAction<Task[]>) => {
+            state.running = action.payload;
+        },
+        setQueuedTasks: (state, action: PayloadAction<Task[]>) => {
+            state.queued = action.payload;
         },
         removeTask: (state, action: PayloadAction<string>) => {
-            state.tasks = state.tasks.filter(task => task.id !== action.payload);
+            state.running = state.running.filter(task => task.id !== action.payload);
+            state.queued = state.queued.filter(task => task.id !== action.payload);
         }
     },
-    selectors: {},
+    selectors: {
+        runningTasks: (state) => state.running,
+        queuedTasks: (state) => state.queued,
+        tasksOfType: (state, type: "running" | "queued") => type === "running" ? state.running : state.queued
+    },
 });
 
 export const store = configureStore({
