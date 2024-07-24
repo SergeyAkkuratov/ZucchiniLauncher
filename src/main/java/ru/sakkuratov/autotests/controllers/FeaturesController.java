@@ -8,36 +8,37 @@ import ru.sakkuratov.autotests.models.Feature;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-@RestController
+@RestController()
 public class FeaturesController {
     private final String defaultFeaturePath = "features";
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("features/add")
-    public ResponseEntity<Object> taskAdd(@RequestBody Feature body) {
-        String filename = body.getFilename();
+    @PostMapping("api/features/add")
+    public ResponseEntity<Object> featureAdd(@RequestBody Feature body) {
+        String filename = body.getFileName();
         String data = body.getData();
 
         if (filename == null || data == null) {
-            return new ResponseEntity<>("Missing filename or data", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("{\"message\":\"Missing filename or data\"}", HttpStatus.BAD_REQUEST);
         }
 
         try {
-            Files.write(Paths.get(defaultFeaturePath, filename + ".feature"), data.getBytes());
-            return new ResponseEntity<>("File created successfully", HttpStatus.CREATED);
+            Files.writeString(Paths.get(defaultFeaturePath, filename), data, StandardCharsets.UTF_8);
+            return new ResponseEntity<>("{\"message\":\"File created successfully\"}", HttpStatus.CREATED);
         } catch (IOException e) {
-            return new ResponseEntity<>("Failed to create file", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("{\"message\":\"Failed to create file\"}", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("features")
-    public ResponseEntity<List<String>> getStatus() {
+    @GetMapping("api/features")
+    public ResponseEntity<List<String>> getFeatures() {
         List<String> features = new ArrayList<>();
         File folder = new File(defaultFeaturePath);
         if (folder.exists()) {
@@ -52,10 +53,10 @@ public class FeaturesController {
         return new ResponseEntity<>(features, HttpStatus.OK);
     }
 
-    @GetMapping("feature/{filename}")
-    public ResponseEntity<Object> getStatus(@PathVariable String filename) {
+    @GetMapping("api/features/{filename}")
+    public ResponseEntity<Object> getFeature(@PathVariable String filename) {
         try {
-            String data = new String(Files.readAllBytes(Paths.get(defaultFeaturePath, filename)));
+            String data = Files.readString(Paths.get(defaultFeaturePath, filename));
             return new ResponseEntity<>(new Feature(filename, data), HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>("Failed to read feature file", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,8 +64,8 @@ public class FeaturesController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("features/{filename}")
-    public ResponseEntity<Object> taskDelete(@PathVariable String filename) {
+    @DeleteMapping("api/features/{filename}")
+    public ResponseEntity<Object> featureDelete(@PathVariable String filename) {
         try {
             Files.delete(Paths.get(defaultFeaturePath, filename));
             return new ResponseEntity<>("Feature file deleted successfully", HttpStatus.OK);

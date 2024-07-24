@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Feature {
-    private String filename;
+    private String fileName;
     private String data;
 }
