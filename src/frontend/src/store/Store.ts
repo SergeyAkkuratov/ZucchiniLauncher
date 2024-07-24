@@ -1,98 +1,31 @@
 /* eslint-disable no-param-reassign */
 import { PayloadAction, configureStore, createSelector, createSlice } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { Task, TaskState } from "./StoreTypes";
+import { ErrorState, TaskState, ZLError } from "./StoreTypes";
 
-export const initialTaskState: TaskState = {
-    running: [
-        {
-            id: "TEST",
-            priority: 1,
-            parameters: {
-                priority: "1",
-                glue: "test",
-                threads: "1",
-                plugin: [
-                    "test"
-                ],
-                featuresPath: "features/test.feature",
-                owner: "Me",
-                tags: "@TEST",
-                timeout: "60m"
-            }
-        },
-        {
-            id: "TEST2",
-            priority: 2,
-            parameters: {
-                priority: "2",
-                glue: "test",
-                threads: "1",
-                plugin: [
-                    "test"
-                ],
-                featuresPath: "features/test2.feature",
-                owner: "Me",
-                tags: "@TEST2",
-                timeout: "60m"
-            }
-        }
-    ],
-    queued: [
-        {
-            id: "TEST",
-            priority: 1,
-            parameters: {
-                priority: "1",
-                glue: "test",
-                threads: "1",
-                plugin: [
-                    "test"
-                ],
-                featuresPath: "features/test.feature",
-                owner: "Me",
-                tags: "@TEST",
-                timeout: "60m"
-            }
-        },
-        {
-            id: "TEST2",
-            priority: 2,
-            parameters: {
-                priority: "2",
-                glue: "test",
-                threads: "1",
-                plugin: [
-                    "test"
-                ],
-                featuresPath: "features/test2.feature",
-                owner: "Me",
-                tags: "@TEST2",
-                timeout: "60m"
-            }
-        }
-    ]
+const MAX_ERRORS_SIZE = 20;
+
+const initialErrorState: ErrorState = {
+    newError: false,
+    errors: []
+}
+
+const initialTaskState: TaskState = {
+    running: [],
+    queued: []
 };
 
 export const taskSlice = createSlice({
     name: "Task",
     initialState: initialTaskState,
     reducers: {
-        addRunningTask: (state, action: PayloadAction<Task>) => {
-            state.running.push(action.payload);
-        },
-        addQueuedTask: (state, action: PayloadAction<Task>) => {
-            state.queued.push(action.payload);
-        },
-        setRunningTasks: (state, action: PayloadAction<Task[]>) => {
-            state.running = action.payload;
-        },
-        setQueuedTasks: (state, action: PayloadAction<Task[]>) => {
-            state.queued = action.payload;
-        },
-        removeTask: (state, action: PayloadAction<string>) => {
-            state.running = state.running.filter(task => task.id !== action.payload);
-            state.queued = state.queued.filter(task => task.id !== action.payload);
+        setTasks: (state, action: PayloadAction<TaskState>) => action.payload,
+        removeTask: (state, action: PayloadAction<{id: string, type: "running" | "queued"}>) => {
+            if(action.payload.type === "running"){
+                state.running = state.running.filter(task => task.id !== action.payload.id);
+            } else {
+                state.queued = state.queued.filter(task => task.id !== action.payload.id);
+            }
         }
     },
     selectors: {
@@ -102,9 +35,31 @@ export const taskSlice = createSlice({
     },
 });
 
+export const errorSlice = createSlice({
+    name: "Errors",
+    initialState: initialErrorState,
+    reducers: {
+        addError: (state, action: PayloadAction<ZLError>) => {
+            state.errors.push(action.payload);
+            state.newError = true;
+            if(state.errors.length > MAX_ERRORS_SIZE) {
+                state.errors = state.errors.slice(-MAX_ERRORS_SIZE, state.errors.length);
+            }
+        },
+        errorShowed: (state) => {
+            state.newError = false;
+        }
+    },
+    selectors: {
+        lastError: (state) => state.errors.at(-1),
+        showError: (state) => state.newError
+    }
+})
+
 export const store = configureStore({
     reducer: {
         Task: taskSlice.reducer,
+        Errors: errorSlice.reducer
     },
 });
 

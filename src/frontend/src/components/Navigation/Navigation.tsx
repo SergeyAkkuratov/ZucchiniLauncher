@@ -1,41 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { TestParameters } from "../../store/StoreTypes";
+import { addTask, getTasks } from "../../backendRequests/TasksRequests";
+import { taskSlice, errorSlice, useAppDispatch } from "../../store/Store";
+import RunTestWindow from "../RunTestWindow/RunTestWindow";
+import logo from "./zucchini.png"
 
 export default function Navigation() {
+    const dispatch = useAppDispatch();
+    const [showAddTask, setShowAddTask] = useState(false);
+
+    async function addTaskFunction(close: boolean, parameters?: TestParameters) {
+        if (parameters) {
+            try {
+                await addTask(parameters);
+                const state = await getTasks();
+                dispatch(taskSlice.actions.setTasks(state));
+            } catch (error) {
+                if (error instanceof Error) {
+                    dispatch(errorSlice.actions.addError({
+                        name: "Couldn't add task",
+                        message: `Couldn't add task from queue!<br>${error.message}`
+                    }));
+                }
+            }
+        }
+        if (close) setShowAddTask(false);
+    }
+
     return (
         <>
-            <nav className="navbar navbar-expand-sm bg-dark" data-bs-theme="dark" data-testid="header">
-                <div className="container-fluid">
-                    <a className="navbar-brand" href="/">
+            <Navbar expand="lg" className="bg-body-tertiary bg-dark" data-bs-theme="dark" data-testid="header">
+                <Container>
+                    <Navbar.Brand href="/">
+                        <img
+                            alt=""
+                            src={logo}
+                            width="30"
+                            height="30"
+                            className="d-inline-block align-top"
+                        />{' '}
                         Zucchini Launcher
-                    </a>
-                    <button
-                        className="navbar-toggler collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbar"
-                        aria-controls="navbar"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation"
-                    >
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbar">
-                        <ul className="navbar-nav me-auto" data-testid="linkList">
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/">
-                                    Main
+                    </Navbar.Brand>
+                    <Button variant="success" onClick={() => setShowAddTask(true)}>Run test</Button>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Item>
+                                <Link className="nav-link" to="/features">
+                                    Features
                                 </Link>
-                            </li>
-                            <li className="nav-item">
+                            </Nav.Item>
+                            <Nav.Item>
                                 <Link className="nav-link" to="/about" data-testid="linkAbout">
                                     About
                                 </Link>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+                            </Nav.Item>
+                        </Nav>
+                    </Navbar.Collapse>
+                    <Nav className="justify-content-end">
+                        <Navbar.Text>
+                            Signed in as: <a href="/login">Mark Otto</a>
+                        </Navbar.Text>
+                    </Nav>
+                </Container>
+            </Navbar>
+            <RunTestWindow showModal={showAddTask} addTaskFunction={addTaskFunction} />
         </>
     );
 }

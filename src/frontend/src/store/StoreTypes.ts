@@ -1,8 +1,8 @@
 export interface TestParameters {
-    priority: string;
-    glue: string;
-    threads: string;
-    plugin: string[];
+    priority?: string;
+    glue?: string;
+    threads?: string;
+    plugin?: string[];
     featuresPath: string;
     owner: string;
     tags: string;
@@ -10,12 +10,22 @@ export interface TestParameters {
 }
 
 export interface Task {
-    id: string;
+    id?: string;
     parameters: TestParameters;
-    priority: number;
+    priority?: number;
 }
 
 export interface TaskState {
     running: Task[];
     queued: Task[];
+}
+
+export interface ZLError {
+    name: string;
+    message: string;
+}
+
+export interface ErrorState {
+    newError: boolean;
+    errors: ZLError[];
 }

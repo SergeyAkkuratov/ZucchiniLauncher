@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Stack } from "react-bootstrap";
 import TaskTable from "../components/TaskTable/TaskTable";
+import { getTasks } from "../backendRequests/TasksRequests";
+import { taskSlice, useAppDispatch } from "../store/Store";
 
 
 export default function Main() {
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        const timerId = setInterval(() => { getTasks().then((state) => { dispatch(taskSlice.actions.setTasks(state)) }) }, 5000);
+        return () => { clearInterval(timerId) };
+    }, [])
+
     return (
         <>
             <Stack gap={2}>

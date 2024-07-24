@@ -10,7 +10,7 @@ module.exports = {
         main: path.resolve(__dirname, "./src/index.tsx"),
     },
     output: {
-        path: path.resolve(__dirname, "../resources/static"),
+        path: path.resolve(__dirname, "../../build/resources/main/static"),
         filename: "[name].bundle.js",
         clean: true,
     },
@@ -46,7 +46,7 @@ module.exports = {
                 test: /\.(png|jpe?g|gif|svg)$/i,
                 use: [
                     {
-                        loader: "file-loader?name=/images/[name].[ext]",
+                        loader: "file-loader?name=images/[name].[ext]",
                     },
                 ],
             },

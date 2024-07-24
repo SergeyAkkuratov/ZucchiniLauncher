@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { CloseButton, ProgressBar, Table } from "react-bootstrap";
-import { taskSlice, useAppSelector } from "../../store/Store";
+import { errorSlice, taskSlice, useAppDispatch, useAppSelector } from "../../store/Store";
 
-import ModalWindow from "../ModalWindow/ModalWindow";
+import ConfirmWindow from "../ConfirmWindow/ConfirmWindow";
+import { removeTask } from "../../backendRequests/TasksRequests";
 
 
 export interface TaskTableProps {
@@ -10,12 +11,27 @@ export interface TaskTableProps {
 }
 
 export default function TaskTable(props: TaskTableProps) {
+    const dispatch = useAppDispatch();
     const tasks = useAppSelector((state) => taskSlice.selectors.tasksOfType(state, props.type));
     const [isModalShow, setIsModalShow] = useState(false);
+    const [currentTaskId, setCurrentTaskId] = useState<string>();
 
-    function closeModal(confirm: boolean) {
+    async function closeModal(confirm: boolean) {
         setIsModalShow(false);
-        console.log(confirm);
+        if (confirm && currentTaskId) {
+            try {
+                await removeTask(currentTaskId);
+            } catch (error) {
+                if (error instanceof Error) {
+                    dispatch(errorSlice.actions.addError({
+                        name: "Couldn't remove task",
+                        message: `Couldn't remove task from queue!<br>${error.message}`
+                    }));
+                }
+
+            }
+            dispatch(taskSlice.actions.removeTask({ id: currentTaskId, type: props.type }));
+        }
     }
 
     return (
@@ -32,7 +48,7 @@ export default function TaskTable(props: TaskTableProps) {
                     </tr>
                 </thead>
                 <tbody>
-                    {tasks.map((task, index) => (
+                    {tasks.length > 0 ? tasks.map((task, index) => (
                         <tr key={index} data-testid={`row-id-${task.id}`}>
                             <td>"TODO: добавить даты"</td>
                             <td>{task.parameters.owner}</td>
@@ -40,13 +56,22 @@ export default function TaskTable(props: TaskTableProps) {
                             <td>{task.parameters.tags}</td>
                             <td><ProgressBar striped animated variant="info" now={20} /></td>
                             <td>
-                                <CloseButton onClick={() => setIsModalShow(true)} data-testid={`stopButton-id-${task.id}`} />
+                                {props.type === "queued" ? (
+                                    <CloseButton onClick={() => {
+                                        setIsModalShow(true);
+                                        setCurrentTaskId(task.id);
+                                    }} data-testid={`stopButton-id-${task.id}`} />
+                                ) : (<></>)}
                             </td>
                         </tr>
-                    ))}
+                    )) : (
+                        <tr>
+                            <td colSpan={6}><p className="text-center">EMPTY</p></td>
+                        </tr>
+                    )}
                 </tbody>
             </Table>
-            <ModalWindow title="Stop task" message="Do you really want to stop task?" showModal={isModalShow} closeModal={closeModal} />
+            <ConfirmWindow title="Remove task" message="Do you really want to remove task from queue?" showModal={isModalShow} closeModal={closeModal} />
         </>
     )
 }
