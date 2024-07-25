@@ -39,3 +39,4 @@ bin
 # Ignore test results
 allure-results
 /features/
+allure-reports
