@@ -21,7 +21,7 @@ export async function addTask(parameters: TestParameters): Promise<Task> {
 }
 
 export async function removeTask(id:string) {
-    await request(`tasks/${id}`, {
+    await fetch(`/api/tasks/${id}`, {
         method: 'DELETE'
     })
 }

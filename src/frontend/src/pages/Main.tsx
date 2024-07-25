@@ -9,6 +9,7 @@ export default function Main() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        getTasks().then((state) => { dispatch(taskSlice.actions.setTasks(state)) });
         const timerId = setInterval(() => { getTasks().then((state) => { dispatch(taskSlice.actions.setTasks(state)) }) }, 5000);
         return () => { clearInterval(timerId) };
     }, [])
@@ -29,6 +30,14 @@ export default function Main() {
                         <Card.Header>Queued Tasks</Card.Header>
                         <Card.Body>
                             <TaskTable type={"queued"} />
+                        </Card.Body>
+                    </Card>
+                </div>
+                <div className="p-2">
+                    <Card border="info">
+                        <Card.Header>Last 10 Finished tasks</Card.Header>
+                        <Card.Body>
+                            <TaskTable type={"finished"} />
                         </Card.Body>
                     </Card>
                 </div>

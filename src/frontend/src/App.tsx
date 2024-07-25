@@ -1,15 +1,15 @@
 import React, { Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
-import "bootswatch/dist/darkly/bootstrap.min.css";
 import Navigation from "./components/Navigation/Navigation";
 import { errorSlice, useAppDispatch, useAppSelector } from "./store/Store";
-import Features from "./pages/Features";
-
-
+import "bootswatch/dist/darkly/bootstrap.min.css";
+import "./styles.css"
 
 const Main = React.lazy(() => import("./pages/Main"));
 const About = React.lazy(() => import("./pages/About"));
+const Features = React.lazy(() => import("./pages/Features"));
+const Login = React.lazy(() => import("./pages/Login"));
 
 export default function App() {
     const dispatch = useAppDispatch();
@@ -20,10 +20,12 @@ export default function App() {
         <>
             <Navigation />
             <Suspense>
-                <Routes>
+                <Routes> 
+                    <Route path="/index.html" element={<Navigate to="/" replace />}/>
                     <Route path="/" element={<Main />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/features" element={<Features />} />
+                    <Route path="/login" element={<Login />} />
                 </Routes>
             </Suspense>
             <ToastContainer position="top-end">
@@ -31,7 +33,7 @@ export default function App() {
                     <Toast.Header>
                         <strong className="me-auto">{lastError?.name}</strong>
                     </Toast.Header>
-                    <Toast.Body>{lastError?.message}</Toast.Body>
+                    <Toast.Body><pre>{lastError?.message}</pre></Toast.Body>
                 </Toast>
             </ToastContainer>
         </>

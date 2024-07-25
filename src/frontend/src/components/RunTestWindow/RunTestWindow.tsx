@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl'
 import { TestParameters } from '../../store/StoreTypes';
 import FeatureSelect from '../FeatureSelect/FeatureSelect';
+import { useAppSelector } from '../../store/Store';
 
 interface RunTestWindowProps {
     showModal: boolean;
@@ -12,11 +13,11 @@ interface RunTestWindowProps {
 }
 
 export default function RunTestWindow(props: RunTestWindowProps) {
+    const user = useAppSelector((state) => state.User);
     const cleanFormData: TestParameters = {
         featuresPath: "placeholder",
         tags: "",
-        timeout: "10S",
-        owner: "TODO: Get logged user"
+        timeout: "10S"        
     };
 
     const [formData, setFormData] = useState<TestParameters>(cleanFormData);
@@ -33,7 +34,7 @@ export default function RunTestWindow(props: RunTestWindowProps) {
         if(!isAnotherTest) {
             setFormData(cleanFormData);
         }
-        props.addTaskFunction(!isAnotherTest, parameters);
+        props.addTaskFunction(!isAnotherTest, {...parameters, owner: user.username} as TestParameters);
     }
 
     return (

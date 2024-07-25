@@ -4,13 +4,14 @@ export interface TestParameters {
     threads?: string;
     plugin?: string[];
     featuresPath: string;
-    owner: string;
+    owner?: string;
     tags: string;
     timeout: string;
 }
 
 export interface Task {
     id?: string;
+    startTime?: string;
     parameters: TestParameters;
     priority?: number;
 }
@@ -18,6 +19,7 @@ export interface Task {
 export interface TaskState {
     running: Task[];
     queued: Task[];
+    finished: Task[];
 }
 
 export interface ZLError {
@@ -29,3 +31,10 @@ export interface ErrorState {
     newError: boolean;
     errors: ZLError[];
 }
+
+export interface UserState {
+    username: string;
+    role: string;
+}
+
+export type TaskType = "running" | "queued" | "finished";
