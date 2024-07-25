@@ -18,9 +18,11 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable);
-        http.authorizeHttpRequests((requests) -> requests.requestMatchers("/", "/home", "/login").permitAll().anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((requests) ->
+                        requests
+                                .requestMatchers("/login").permitAll()
+                                .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults());
 
         return http.build();
@@ -30,14 +32,14 @@ public class WebSecurityConfig {
     public UserDetailsService userDetailsService() {
         UserDetails user = User.builder()
                 .username("user")
-                .password("{bcrypt}$2a$10$I2bzu0rsUI/rPlappHrJJOk78fyfebOkwJfxns6J4IWcM4PVtOvi.")
+                .password("{bcrypt}$2a$10$4xT6ZND2OTSop8pcXLp74O7/0JV5vuUOyT9xPVZePktYdMCvfGHQi")
                 .roles("USER")
                 .build();
 
         UserDetails admin = User.builder()
                 .username("admin")
-                .password("{bcrypt}$2a$10$I2bzu0rsUI/rPlappHrJJOk78fyfebOkwJfxns6J4IWcM4PVtOvi.")
-                .roles("USER", "ADMIN")
+                .password("{bcrypt}$2a$10$OWJB3jkVKeDSgLAtoVUs0.2ZwGy450ii/sAGvwvWqedcjUXbUMTHK")
+                .roles("ADMIN")
                 .build();
 
         return new InMemoryUserDetailsManager(user, admin);

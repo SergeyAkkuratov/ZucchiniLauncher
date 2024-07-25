@@ -25,12 +25,17 @@ public class TestWatcher {
     private final HttpHeaders headers = new HttpHeaders();
     private final ConcurrentLinkedDeque<CucumberTask> runningTasks = new ConcurrentLinkedDeque<>();
     private final ConcurrentLinkedDeque<CucumberTask> queuedTasks = new ConcurrentLinkedDeque<>();
+    private final ConcurrentLinkedDeque<CucumberTask> finishedTasks = new ConcurrentLinkedDeque<>();
     @Value("${maximum.running.tests:3}")
     private Integer maximumRunningTests;
+    @Value("${maximum.finished.tasks:10}")
+    private Integer maximumFinishedTasks;
     @Autowired
     private TaskExecutor taskExecutor;
     @Autowired
     private ApplicationEventPublisher publisher;
+
+    private Integer count = 2;
 
     @PostConstruct
     public void init() {
@@ -38,7 +43,7 @@ public class TestWatcher {
     }
 
     public ResponseEntity<CucumberTask> addTask(TestParameters testParameters) {
-        CucumberTask task = new CucumberTask(testParameters, publisher);
+        CucumberTask task = new CucumberTask(count++, testParameters, publisher);
         if (runningTasks.size() < maximumRunningTests) {
             runningTasks.add(task);
             taskExecutor.execute(task);
@@ -53,6 +58,7 @@ public class TestWatcher {
     public void onTestFinished(TestFinishedEvent event) {
         CucumberTask task = event.getTask();
         runningTasks.remove(task);
+        finishTask(task);
         if (!queuedTasks.isEmpty() && runningTasks.size() < maximumRunningTests) {
             CucumberTask nextTask = queuedTasks.poll();
             runningTasks.add(nextTask);
@@ -64,6 +70,7 @@ public class TestWatcher {
         Map<String, Object> tasks = new HashMap<>();
         tasks.put("running", runningTasks);
         tasks.put("queued", queuedTasks);
+        tasks.put("finished", finishedTasks);
         return tasks;
     }
 
@@ -87,5 +94,12 @@ public class TestWatcher {
 
     public void removeTask(String id) {
         queuedTasks.removeIf(t -> t.getId().equals(id));
+    }
+
+    public void finishTask(CucumberTask task) {
+        finishedTasks.add(task);
+        if (finishedTasks.size() > maximumFinishedTasks) {
+            finishedTasks.removeFirst();
+        }
     }
 }

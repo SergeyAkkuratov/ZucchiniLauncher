@@ -48,7 +48,7 @@ public class TaskController {
     public ResponseEntity<Object> removeTask(@PathVariable String id) {
         try {
             testWatcher.removeTask(id);
-            return ResponseEntity.ok().headers(headers).body("Task removed");
+            return ResponseEntity.ok().headers(headers).build();
         } catch (Exception ex) {
             return ResponseEntity.internalServerError().body("Task wasn't removed: " + getStackTrace(ex));
         }
