@@ -68,9 +68,9 @@ public class FeaturesController {
     public ResponseEntity<Object> featureDelete(@PathVariable String filename) {
         try {
             Files.delete(Paths.get(defaultFeaturePath, filename));
-            return new ResponseEntity<>("Feature file deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("{\"message\":\"Feature file deleted successfully\"}", HttpStatus.OK);
         } catch (IOException e) {
-            return new ResponseEntity<>("Failed to delete feature file", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("{\"message\":\"Failed to delete feature file\"}", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
