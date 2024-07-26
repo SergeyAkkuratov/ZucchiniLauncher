@@ -2,10 +2,11 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { errorSlice, store, userSlice } from "./store/Store";
-
-import App from "./App";
+import { store } from "./store/Store";
+import userSlice from "./store/UserSlice";
+import errorSlice from "./store/ErrorSlice";
 import getUserName from "./backendRequests/UserRequests";
+import App from "./App";
 
 getUserName()
     .then((user) => { store.dispatch(userSlice.actions.setUser(user)) })

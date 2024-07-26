@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Form } from "react-bootstrap";
-import { getFeatures } from "../../backendRequests/FeaturesRequests";
-import { errorSlice, useAppDispatch } from "../../store/Store";
-
+import { updateFeatures, useAppSelector } from "../../store/Store";
 
 export interface FeatureSelectProps {
     onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -11,13 +9,10 @@ export interface FeatureSelectProps {
 }
 
 export default function FeatureSelect(props: FeatureSelectProps) {
-    const dispatch = useAppDispatch();
-    const [features, setFeatures] = useState<string[]>([]);
+    const features = useAppSelector((state) => state.Features.filenames);
     
     useEffect(() => {
-        getFeatures()
-            .then((names) => { setFeatures(names) })
-            .catch((error) => { dispatch(errorSlice.actions.addError(error)) });
+        updateFeatures();
     }, [])
 
     const handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

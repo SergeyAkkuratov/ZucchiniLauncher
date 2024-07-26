@@ -37,4 +37,8 @@ export interface UserState {
     role: string;
 }
 
+export interface FeaturesState {
+    filenames: string[];
+}
+
 export type TaskType = "running" | "queued" | "finished";

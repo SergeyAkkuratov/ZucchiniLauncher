@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 import { login } from "../backendRequests/UserRequests";
-import { errorSlice, useAppDispatch } from "../store/Store";
+import { useAppDispatch } from "../store/Store";
+import errorSlice from "../store/ErrorSlice";
 
 
 export default function Login() {

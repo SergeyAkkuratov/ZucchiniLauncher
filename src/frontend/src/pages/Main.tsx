@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { Card, Stack } from "react-bootstrap";
 import TaskTable from "../components/TaskTable/TaskTable";
 import { getTasks } from "../backendRequests/TasksRequests";
-import { taskSlice, useAppDispatch } from "../store/Store";
+import { useAppDispatch } from "../store/Store";
+import taskSlice from "../store/TaskSlice";
 
 
 export default function Main() {
