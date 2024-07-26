@@ -7,7 +7,7 @@
     "test": "tsc --noEmit && jest --coverage",
     "lint": "prettier --check . && eslint . --ext .js,.ts",
     "lint:fix": "prettier --write . && eslint . --fix",
-    "build": "webpack watch --mode production",
+    "build": "webpack build --mode production",
     "start": "webpack serve --mode development --port 9090"
   },
   "repository": {

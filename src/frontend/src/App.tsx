@@ -7,9 +7,7 @@ import errorSlice from "./store/ErrorSlice";
 import "bootswatch/dist/darkly/bootstrap.min.css";
 import "./styles.css"
 
-
-const Main = React.lazy(() => import("./pages/Main"));
-const About = React.lazy(() => import("./pages/About"));
+const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Features = React.lazy(() => import("./pages/Features"));
 const Login = React.lazy(() => import("./pages/Login"));
 
@@ -24,8 +22,7 @@ export default function App() {
             <Suspense>
                 <Routes> 
                     <Route path="/index.html" element={<Navigate to="/" replace />}/>
-                    <Route path="/" element={<Main />} />
-                    <Route path="/about" element={<About />} />
+                    <Route path="/" element={<Dashboard />} />
                     <Route path="/features" element={<Features />} />
                     <Route path="/login" element={<Login />} />
                 </Routes>

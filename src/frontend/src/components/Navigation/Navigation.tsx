@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../store/Store";
 import errorSlice from "../../store/ErrorSlice";
 import taskSlice from "../../store/TaskSlice";
 import RunTestWindow from "../RunTestWindow/RunTestWindow";
-import logo from "./zucchini.png"
+import logo from "../../images/zucchini.png"
 import userSlice from "../../store/UserSlice";
 
 
@@ -65,11 +65,6 @@ export default function Navigation() {
                         <Nav.Item>
                             <Link className="nav-link" to="/features">
                                 Features
-                            </Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Link className="nav-link" to="/about" data-testid="linkAbout">
-                                About
                             </Link>
                         </Nav.Item>
                     </Nav>

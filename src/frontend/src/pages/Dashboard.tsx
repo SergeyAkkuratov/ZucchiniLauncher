@@ -6,7 +6,7 @@ import { useAppDispatch } from "../store/Store";
 import taskSlice from "../store/TaskSlice";
 
 
-export default function Main() {
+export default function Dashboard() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
