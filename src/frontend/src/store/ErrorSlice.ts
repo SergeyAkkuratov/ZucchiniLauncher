@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ErrorState, ZLError } from "./StoreTypes";
 
-const MAX_ERRORS_SIZE = 20;
+export const MAX_ERRORS_SIZE = 20;
 
 const initialErrorState: ErrorState = {
     newError: false,
@@ -14,7 +14,6 @@ const errorSlice = createSlice({
     initialState: initialErrorState,
     reducers: {
         addError: (state, action: PayloadAction<ZLError>) => {
-            console.error(action.payload);
             state.errors.push(action.payload);
             state.newError = true;
             if (state.errors.length > MAX_ERRORS_SIZE) {
