@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl'
-import { TestParameters } from '../../store/StoreTypes';
-import FeatureSelect from '../FeatureSelect/FeatureSelect';
-import { useAppSelector } from '../../store/Store';
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import FormControl from "react-bootstrap/FormControl";
+import { TestParameters } from "../../store/StoreTypes";
+import FeatureSelect from "../FeatureSelect/FeatureSelect";
+import { useAppSelector } from "../../store/Store";
 
 interface RunTestWindowProps {
     showModal: boolean;
@@ -17,7 +17,7 @@ export default function RunTestWindow(props: RunTestWindowProps) {
     const cleanFormData: TestParameters = {
         featuresPath: "placeholder",
         tags: "",
-        timeout: "10S"        
+        timeout: "10S",
     };
 
     const [formData, setFormData] = useState<TestParameters>(cleanFormData);
@@ -31,11 +31,11 @@ export default function RunTestWindow(props: RunTestWindowProps) {
     };
 
     const runTest = (parameters?: TestParameters) => {
-        if(!isAnotherTest) {
+        if (!isAnotherTest) {
             setFormData(cleanFormData);
         }
-        props.addTaskFunction(!isAnotherTest, {...parameters, owner: user.username} as TestParameters);
-    }
+        props.addTaskFunction(!isAnotherTest, { ...parameters, owner: user.username } as TestParameters);
+    };
 
     return (
         <>
@@ -46,20 +46,36 @@ export default function RunTestWindow(props: RunTestWindowProps) {
                 <Modal.Body>
                     <Form>
                         <Form.Group className="mb-3" controlId="featureSelect">
-                            <FeatureSelect onChange={(event) => handleChange(event)} value={formData.featuresPath} id="featuresPath"/>
+                            <FeatureSelect onChange={(event) => handleChange(event)} value={formData.featuresPath} id="featuresPath" />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="tagsInput">
                             <Form.Label>Tags</Form.Label>
-                            <FormControl type="text" value={formData.tags} onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)} id="tags"/>
+                            <FormControl
+                                type="text"
+                                value={formData.tags}
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+                                id="tags"
+                            />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="timeoutInput">
                             <Form.Label>Timeout</Form.Label>
-                            <Form.Control type="text" value={formData.timeout} onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)} id="timeout"/>
+                            <Form.Control
+                                type="text"
+                                value={formData.timeout}
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
+                                id="timeout"
+                            />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Form.Check type="switch" id="another" label="Run another test" defaultChecked={isAnotherTest} onChange={() => setAnotherTest(!isAnotherTest)}/>
+                    <Form.Check
+                        type="switch"
+                        id="another"
+                        label="Run another test"
+                        defaultChecked={isAnotherTest}
+                        onChange={() => setAnotherTest(!isAnotherTest)}
+                    />
                     <Button variant="secondary" onClick={() => props.addTaskFunction(true)}>
                         Close
                     </Button>

@@ -25,10 +25,12 @@ export default function Features() {
                 await addFeature({ fileName: newFileName, data });
             } catch (error) {
                 if (error instanceof Error) {
-                    dispatch(errorSlice.actions.addError({
-                        name: "Couldn't add feature",
-                        message: `${error.message}`
-                    }));
+                    dispatch(
+                        errorSlice.actions.addError({
+                            name: "Couldn't add feature",
+                            message: `${error.message}`,
+                        })
+                    );
                 }
             }
         }
@@ -52,7 +54,7 @@ export default function Features() {
                 setData(value.data);
             })
             .catch((error) => dispatch(errorSlice.actions.addError(error)));
-    }
+    };
 
     const handleSaveClick = () => setSaving(true);
 
@@ -64,21 +66,22 @@ export default function Features() {
                 setChanged(false);
             })
             .catch((error) => dispatch(errorSlice.actions.addError(error)));
-    }
+    };
 
     async function closeModal(confirm: boolean) {
         setIsModalShow(false);
-        if (confirm && fileName && fileName!=="") {
+        if (confirm && fileName && fileName !== "") {
             try {
                 await removeFeature(fileName);
             } catch (error) {
                 if (error instanceof Error) {
-                    dispatch(errorSlice.actions.addError({
-                        name: "Couldn't remove feature",
-                        message: `${error.message}`
-                    }));
+                    dispatch(
+                        errorSlice.actions.addError({
+                            name: "Couldn't remove feature",
+                            message: `${error.message}`,
+                        })
+                    );
                 }
-
             }
             updateFeatures();
         }
@@ -94,17 +97,13 @@ export default function Features() {
                 value={data}
                 onChange={(value) => {
                     setChanged(true);
-                    setData(value ?? "")
+                    setData(value ?? "");
                 }}
             />
             <Stack direction="horizontal" gap={3}>
                 <Dropdown as={ButtonGroup} className="ms-auto">
-                    <Button
-                        variant="success"
-                        disabled={isSaving || !isChanged}
-                        onClick={!isSaving ? handleSaveClick : undefined}
-                    >
-                        {isSaving ? 'Saving…' : 'Save changes'}
+                    <Button variant="success" disabled={isSaving || !isChanged} onClick={!isSaving ? handleSaveClick : undefined}>
+                        {isSaving ? "Saving…" : "Save changes"}
                     </Button>
 
                     <Dropdown.Toggle split variant="success" id="dropdown-split-basic" />
@@ -112,10 +111,19 @@ export default function Features() {
                         <Dropdown.Item onClick={() => setShowAddFeature(true)}>Add new feature</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-                <Button variant="danger" onClick={() => setIsModalShow(true)} disabled={!isAdmin}>Delete</Button>
-                <Button variant="secondary" onClick={handleCancelClick}>Cancel</Button>
+                <Button variant="danger" onClick={() => setIsModalShow(true)} disabled={!isAdmin}>
+                    Delete
+                </Button>
+                <Button variant="secondary" onClick={handleCancelClick}>
+                    Cancel
+                </Button>
             </Stack>
-            <ConfirmWindow title="Remove feature" message="Do you really want to remove feature from server?" showModal={isModalShow} closeModal={closeModal} />
+            <ConfirmWindow
+                title="Remove feature"
+                message="Do you really want to remove feature from server?"
+                showModal={isModalShow}
+                closeModal={closeModal}
+            />
             <AddNewFeature showModal={showAddFeature} closeModal={addNewFeature} />
         </>
     );

@@ -2,9 +2,8 @@ import React from "react";
 import { Table } from "react-bootstrap";
 import { Task } from "../../store/StoreTypes";
 
-
 interface TestDetailsProps {
-    task: Task
+    task: Task;
 }
 // {
 //     "id": "121896cd-35c9-43d2-937e-a59bb438375b",
@@ -29,13 +28,14 @@ export default function TestDetails(props: TestDetailsProps) {
         <>
             <Table striped hover>
                 <tbody>
-                    {Object.entries(props.task.parameters).map(([key, value]) => (                    
+                    {Object.entries(props.task.parameters).map(([key, value]) => (
                         <tr key={key}>
                             <td>{key.toUpperCase()}</td>
                             <td>{value}</td>
-                        </tr>))}
+                        </tr>
+                    ))}
                 </tbody>
             </Table>
         </>
-    )
+    );
 }

@@ -5,15 +5,22 @@ import { getTasks } from "../backendRequests/TasksRequests";
 import { useAppDispatch } from "../store/Store";
 import taskSlice from "../store/TaskSlice";
 
-
 export default function Dashboard() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        getTasks().then((state) => { dispatch(taskSlice.actions.setTasks(state)) });
-        const timerId = setInterval(() => { getTasks().then((state) => { dispatch(taskSlice.actions.setTasks(state)) }) }, 5000);
-        return () => { clearInterval(timerId) };
-    }, [])
+        getTasks().then((state) => {
+            dispatch(taskSlice.actions.setTasks(state));
+        });
+        const timerId = setInterval(() => {
+            getTasks().then((state) => {
+                dispatch(taskSlice.actions.setTasks(state));
+            });
+        }, 5000);
+        return () => {
+            clearInterval(timerId);
+        };
+    }, []);
 
     return (
         <>

@@ -22,7 +22,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./src/index.html",
             filename: "./index.html",
-            favicon: "./src/images/zucchini.png"
+            favicon: "./src/images/zucchini.png",
         }),
         new DefinePlugin({
             PREFIX: JSON.stringify(PREFIX),

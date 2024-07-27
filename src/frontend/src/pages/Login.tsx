@@ -5,14 +5,13 @@ import { login } from "../backendRequests/UserRequests";
 import { useAppDispatch } from "../store/Store";
 import errorSlice from "../store/ErrorSlice";
 
-
 export default function Login() {
     const dispatch = useAppDispatch();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [searchParams] = useSearchParams();
 
-    if(searchParams.has("logout")) {
+    if (searchParams.has("logout")) {
         window.location.href = `login?logout`;
     }
 
@@ -22,10 +21,12 @@ export default function Login() {
             await login(username, password);
         } catch (error) {
             if (error instanceof Error) {
-                dispatch(errorSlice.actions.addError({
-                    name: "Couldn't add task",
-                    message: `Couldn't add task from queue!<br>${error.message}`
-                }));
+                dispatch(
+                    errorSlice.actions.addError({
+                        name: "Couldn't add task",
+                        message: `Couldn't add task from queue!<br>${error.message}`,
+                    })
+                );
             }
         }
     };
@@ -38,10 +39,17 @@ export default function Login() {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Enter password" value={password} onChange={(event) => setPassword(event.target.value)} />
+                    <Form.Control
+                        type="password"
+                        placeholder="Enter password"
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                    />
                 </Form.Group>
-                <Button variant="primary" type="submit">Login</Button>
+                <Button variant="primary" type="submit">
+                    Login
+                </Button>
             </Form>
         </>
-    )
+    );
 }

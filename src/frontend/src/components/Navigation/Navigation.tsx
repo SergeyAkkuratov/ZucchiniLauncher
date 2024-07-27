@@ -7,9 +7,8 @@ import { useAppDispatch, useAppSelector } from "../../store/Store";
 import errorSlice from "../../store/ErrorSlice";
 import taskSlice from "../../store/TaskSlice";
 import RunTestWindow from "../RunTestWindow/RunTestWindow";
-import logo from "../../images/zucchini.png"
+import logo from "../../images/zucchini.png";
 import userSlice from "../../store/UserSlice";
-
 
 export default function Navigation() {
     const navigate = useNavigate();
@@ -26,10 +25,12 @@ export default function Navigation() {
                 dispatch(taskSlice.actions.setTasks(state));
             } catch (error) {
                 if (error instanceof Error) {
-                    dispatch(errorSlice.actions.addError({
-                        name: "Couldn't add task",
-                        message: `Couldn't add task from queue!<br>${error.message}`
-                    }));
+                    dispatch(
+                        errorSlice.actions.addError({
+                            name: "Couldn't add task",
+                            message: `Couldn't add task from queue!<br>${error.message}`,
+                        })
+                    );
                 }
             }
         }
@@ -40,20 +41,17 @@ export default function Navigation() {
         <>
             <Navbar expand="lg" className="bg-body-tertiary bg-dark" data-bs-theme="dark" data-testid="header">
                 <Navbar.Brand href="/">
-                    <img
-                        alt=""
-                        src={logo}
-                        width="30"
-                        height="30"
-                        className="d-inline-block align-top"
-                    />{' '}
-                    Zucchini Launcher
+                    <img alt="" src={logo} width="30" height="30" className="d-inline-block align-top" /> Zucchini Launcher
                 </Navbar.Brand>
                 {user.username ? (
-                    <Badge bg={isAdmin ? "success" : "primary"} onClick={() => navigate("/login?logout")}>{user.username}</Badge>
+                    <Badge bg={isAdmin ? "success" : "primary"} onClick={() => navigate("/login?logout")}>
+                        {user.username}
+                    </Badge>
                 ) : (
-                    <Badge bg="secondary" onClick={() => navigate("/login")}>unauthorized</Badge>
-                )}                
+                    <Badge bg="secondary" onClick={() => navigate("/login")}>
+                        unauthorized
+                    </Badge>
+                )}
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
@@ -69,7 +67,9 @@ export default function Navigation() {
                         </Nav.Item>
                     </Nav>
                     <Nav className="justify-content-end">
-                        <Button variant="success" onClick={() => setShowAddTask(true)}>Run test</Button>
+                        <Button variant="success" onClick={() => setShowAddTask(true)}>
+                            Run test
+                        </Button>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

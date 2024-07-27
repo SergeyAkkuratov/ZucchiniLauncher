@@ -1,4 +1,3 @@
-
 import { configureStore, createSelector } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import userSlice from "./UserSlice";
@@ -12,7 +11,7 @@ export const store = configureStore({
         Task: taskSlice.reducer,
         User: userSlice.reducer,
         Errors: errorSlice.reducer,
-        Features: featureSlice.reducer
+        Features: featureSlice.reducer,
     },
 });
 
@@ -27,6 +26,10 @@ export const createAppSelector = createSelector.withTypes<RootState>();
 
 export function updateFeatures() {
     getFeatures()
-        .then((filenames) => { store.dispatch(featureSlice.actions.updateFileNames({filenames})) })
-        .catch((error) => { store.dispatch(errorSlice.actions.addError(error)) });
+        .then((filenames) => {
+            store.dispatch(featureSlice.actions.updateFileNames({ filenames }));
+        })
+        .catch((error) => {
+            store.dispatch(errorSlice.actions.addError(error));
+        });
 }

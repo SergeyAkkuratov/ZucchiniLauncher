@@ -2,7 +2,7 @@ import { Task, TaskState, TestParameters } from "../store/StoreTypes";
 import request from "./Request";
 
 export async function getTasks(): Promise<TaskState> {
-    return await request("tasks") as TaskState;
+    return (await request("tasks")) as TaskState;
 }
 
 export async function getTask(id: string): Promise<Task> {
@@ -11,17 +11,17 @@ export async function getTask(id: string): Promise<Task> {
 }
 
 export async function addTask(parameters: TestParameters): Promise<Task> {
-    return await request("tasks/add", {
-        method: 'POST',
+    return (await request("tasks/add", {
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(parameters),
-    }) as Task;
+    })) as Task;
 }
 
-export async function removeTask(id:string) {
+export async function removeTask(id: string) {
     await fetch(`/api/tasks/${id}`, {
-        method: 'DELETE'
-    })
+        method: "DELETE",
+    });
 }

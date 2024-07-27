@@ -9,8 +9,12 @@ import getUserName from "./backendRequests/UserRequests";
 import App from "./App";
 
 getUserName()
-    .then((user) => { store.dispatch(userSlice.actions.setUser(user)) })
-    .catch((error) => { store.dispatch(errorSlice.actions.addError(error)) });
+    .then((user) => {
+        store.dispatch(userSlice.actions.setUser(user));
+    })
+    .catch((error) => {
+        store.dispatch(errorSlice.actions.addError(error));
+    });
 const root = createRoot(document.getElementById("app")!);
 root.render(
     <>

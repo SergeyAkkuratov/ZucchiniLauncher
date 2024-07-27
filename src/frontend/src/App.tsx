@@ -5,7 +5,7 @@ import Navigation from "./components/Navigation/Navigation";
 import { useAppDispatch, useAppSelector } from "./store/Store";
 import errorSlice from "./store/ErrorSlice";
 import "bootswatch/dist/darkly/bootstrap.min.css";
-import "./styles.css"
+import "./styles.css";
 
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Features = React.lazy(() => import("./pages/Features"));
@@ -20,8 +20,8 @@ export default function App() {
         <>
             <Navigation />
             <Suspense>
-                <Routes> 
-                    <Route path="/index.html" element={<Navigate to="/" replace />}/>
+                <Routes>
+                    <Route path="/index.html" element={<Navigate to="/" replace />} />
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/features" element={<Features />} />
                     <Route path="/login" element={<Login />} />
@@ -32,7 +32,9 @@ export default function App() {
                     <Toast.Header>
                         <strong className="me-auto">{lastError?.name}</strong>
                     </Toast.Header>
-                    <Toast.Body><pre>{lastError?.message}</pre></Toast.Body>
+                    <Toast.Body>
+                        <pre>{lastError?.message}</pre>
+                    </Toast.Body>
                 </Toast>
             </ToastContainer>
         </>

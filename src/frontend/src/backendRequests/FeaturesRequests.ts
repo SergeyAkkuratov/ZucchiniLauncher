@@ -6,7 +6,7 @@ export interface Feature {
 }
 
 export async function getFeatures(): Promise<string[]> {
-    const featureNames = await request("features") as string[];
+    const featureNames = (await request("features")) as string[];
     return featureNames;
 }
 
@@ -17,16 +17,16 @@ export async function getFeature(fileName: string): Promise<Feature> {
 
 export async function addFeature(feature: Feature): Promise<void> {
     await request("features/add", {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json; charset=UTF-8'
+            "Content-Type": "application/json; charset=UTF-8",
         },
         body: JSON.stringify(feature),
-    })
+    });
 }
 
 export async function removeFeature(fileName: string) {
     await request(`features/${fileName}`, {
-        method: 'DELETE'
-    })
+        method: "DELETE",
+    });
 }
