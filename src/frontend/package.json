@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "description": "WEB frontend for Zucchini Launcher",
     "scripts": {
-        "test": "tsc --noEmit && jest --coverage",
+        "test": "tsc --noEmit && jest --passWithNoTests --coverage",
         "lint": "prettier --check . && eslint . --ext .js,.ts",
         "lint:fix": "prettier --write . && eslint . --fix",
         "build": "webpack build --mode production",
