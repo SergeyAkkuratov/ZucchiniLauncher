@@ -14,16 +14,20 @@ const taskSlice = createSlice({
     reducers: {
         setTasks: (state, action: PayloadAction<TaskState>) => action.payload,
         removeTask: (state, action: PayloadAction<{ id: string; type: TaskType }>) => {
-            if (action.payload.type === "running") {
-                state.running = state.running.filter((task) => task.id !== action.payload.id);
-            } else {
-                state.queued = state.queued.filter((task) => task.id !== action.payload.id);
+            switch (action.payload.type) {
+                case "finished":
+                    state.finished = state.finished.filter((task) => task.id !== action.payload.id);
+                    break;
+                case "queued":
+                    state.queued = state.queued.filter((task) => task.id !== action.payload.id);
+                    break;
+                default:
+                    state.running = state.running.filter((task) => task.id !== action.payload.id);
+                    break;
             }
         },
     },
     selectors: {
-        runningTasks: (state) => state.running,
-        queuedTasks: (state) => state.queued,
         tasksOfType: (state, type: TaskType) => {
             switch (type) {
                 case "finished":

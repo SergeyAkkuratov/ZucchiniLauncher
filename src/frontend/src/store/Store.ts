@@ -5,6 +5,7 @@ import taskSlice from "./TaskSlice";
 import errorSlice from "./ErrorSlice";
 import featureSlice from "./FeatureSlice";
 import { getFeatures } from "../backendRequests/FeaturesRequests";
+import { ZLError } from "./StoreTypes";
 
 export const store = configureStore({
     reducer: {
@@ -24,12 +25,11 @@ export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
 export const useAppSelector = useSelector.withTypes<RootState>();
 export const createAppSelector = createSelector.withTypes<RootState>();
 
-export function updateFeatures() {
-    getFeatures()
-        .then((filenames) => {
-            store.dispatch(featureSlice.actions.updateFileNames({ filenames }));
-        })
-        .catch((error) => {
-            store.dispatch(errorSlice.actions.addError(error));
-        });
+export async function updateFeatures() {
+    try {
+        const filenames = await getFeatures();
+        store.dispatch(featureSlice.actions.updateFileNames({ filenames }));
+    } catch (error) {
+        store.dispatch(errorSlice.actions.addError(error as ZLError));
+    }
 }
