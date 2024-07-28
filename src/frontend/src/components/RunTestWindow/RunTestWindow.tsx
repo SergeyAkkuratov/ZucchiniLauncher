@@ -39,7 +39,7 @@ export default function RunTestWindow(props: RunTestWindowProps) {
 
     return (
         <>
-            <Modal show={props.showModal} onHide={() => props.addTaskFunction(true)} size="lg">
+            <Modal show={props.showModal} onHide={() => props.addTaskFunction(true)} size="lg" data-testid="modal-window">
                 <Modal.Header closeButton>
                     <Modal.Title>Run new test</Modal.Title>
                 </Modal.Header>
@@ -55,6 +55,7 @@ export default function RunTestWindow(props: RunTestWindowProps) {
                                 value={formData.tags}
                                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
                                 id="tags"
+                                data-testid={"input-tags"}
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="timeoutInput">
@@ -64,6 +65,7 @@ export default function RunTestWindow(props: RunTestWindowProps) {
                                 value={formData.timeout}
                                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleChange(event)}
                                 id="timeout"
+                                data-testid={"input-timeout"}
                             />
                         </Form.Group>
                     </Form>
@@ -75,11 +77,12 @@ export default function RunTestWindow(props: RunTestWindowProps) {
                         label="Run another test"
                         defaultChecked={isAnotherTest}
                         onChange={() => setAnotherTest(!isAnotherTest)}
+                        data-testid={"run-another-test"}
                     />
-                    <Button variant="secondary" onClick={() => props.addTaskFunction(true)}>
+                    <Button variant="secondary" onClick={() => props.addTaskFunction(true)} data-testid={"button-close"}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => runTest(formData)}>
+                    <Button variant="primary" onClick={() => runTest(formData)} data-testid={"button-run"}>
                         Run
                     </Button>
                 </Modal.Footer>
