@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TaskState, TaskType } from "./StoreTypes";
 
-const initialTaskState: TaskState = {
+export const initialTaskState: TaskState = {
     running: [],
     queued: [],
     finished: [],

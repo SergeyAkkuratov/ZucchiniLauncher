@@ -4,7 +4,7 @@ import { ErrorState, ZLError } from "./StoreTypes";
 
 export const MAX_ERRORS_SIZE = 20;
 
-const initialErrorState: ErrorState = {
+export const initialErrorState: ErrorState = {
     newError: false,
     errors: [],
 };

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserState } from "./StoreTypes";
 
-const initialUserState: UserState = {
+export const initialUserState: UserState = {
     username: "",
     role: "",
 };
