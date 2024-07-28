@@ -12,10 +12,10 @@ export default function ErrorMessage() {
         <>
             <ToastContainer position="top-end" className="toast-top-full-width">
                 <Toast onClose={() => dispatch(errorSlice.actions.errorShowed())} show={showError} delay={3000} autohide bg="danger">
-                    <Toast.Header>
+                    <Toast.Header data-testid="header">
                         <strong className="me-auto">{lastError?.name}</strong>
                     </Toast.Header>
-                    <Toast.Body>
+                    <Toast.Body data-testid="body">
                         <pre>{lastError?.message}</pre>
                     </Toast.Body>
                 </Toast>
