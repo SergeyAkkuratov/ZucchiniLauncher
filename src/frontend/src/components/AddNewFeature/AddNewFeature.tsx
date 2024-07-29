@@ -23,7 +23,7 @@ export default function AddNewFeature(props: AddNewFeatureProps) {
         <>
             <Modal show={props.showModal} onHide={() => addFeature()} onShow={() => innerRef.current?.focus()}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Run new test</Modal.Title>
+                    <Modal.Title>Add new feature file</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form

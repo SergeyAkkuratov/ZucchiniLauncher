@@ -52,7 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Zip artifact for deployment
-        run: zip zucchini-launcher.zip .//build/libs/zucchini-launcher.jar
+        run: zip zucchini-launcher.zip ./build/libs/* -r
 
       - name: Create Draft Release
         id: create_release

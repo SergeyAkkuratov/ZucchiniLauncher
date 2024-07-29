@@ -122,8 +122,8 @@ export default function TaskTable(props: TaskTableProps) {
                 </Offcanvas.Body>
             </Offcanvas>
             <ConfirmWindow
-                title="Remove task"
-                message="Do you really want to remove task from queue?"
+                title="Remove test"
+                message="Do you really want to remove test from queue?"
                 showModal={isModalShow}
                 closeModal={closeModal}
             />
