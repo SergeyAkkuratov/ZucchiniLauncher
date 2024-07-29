@@ -51,6 +51,11 @@ export default function Navigation() {
                                 Features
                             </Link>
                         </Nav.Item>
+                        <Nav.Item>
+                            <Link className="nav-link" to="/about" data-testid="link-about">
+                                About
+                            </Link>
+                        </Nav.Item>
                     </Nav>
                     <Nav className="justify-content-end">
                         <Button variant="success" onClick={() => setShowAddTask(true)} data-testid="button-runTest">

@@ -4,13 +4,14 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const isProduction = process.argv[process.argv.indexOf("--mode") + 1] === "production";
 const PREFIX = isProduction ? "" : "";
+const outputDir = isProduction ? "../main/resources/static" : "../../build/resources/main/static";
 
 module.exports = {
     entry: {
         main: path.resolve(__dirname, "./src/index.tsx"),
     },
     output: {
-        path: path.resolve(__dirname, "../../build/resources/main/static"),
+        path: path.resolve(__dirname, outputDir),
         filename: "[name].bundle.js",
         clean: true,
     },

@@ -8,6 +8,7 @@ import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Features = React.lazy(() => import("./pages/Features"));
 const Login = React.lazy(() => import("./pages/Login"));
+const About = React.lazy(() => import("./pages/About"));
 
 export default function App() {
     return (
@@ -19,6 +20,7 @@ export default function App() {
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/features" element={<Features />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/about" element={<About />} />
                 </Routes>
             </Suspense>
             <ErrorMessage />

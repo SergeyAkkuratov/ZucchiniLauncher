@@ -47,6 +47,7 @@ describe("Run Test Window tests", () => {
         expect(screen.getByTestId("badge-user").innerHTML).toBe("test");
         expect(screen.getByTestId("link-dashboard")).toBeInTheDocument();
         expect(screen.getByTestId("link-features")).toBeInTheDocument();
+        expect(screen.getByTestId("link-about")).toBeInTheDocument();
         expect(screen.getByTestId("button-runTest")).toBeInTheDocument();
     });
 
