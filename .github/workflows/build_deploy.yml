@@ -1,0 +1,81 @@
+name: Check, Build and Artifact Deploy
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  pull-requests: write
+  deployments: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin' # https://github.com/actions/setup-java/issues/298
+
+      - name: Install Packages
+        working-directory: src/frontend
+        run: |
+          npm install
+
+      - name: Lint check
+        working-directory: src/frontend
+        run: |
+          npm run lint
+
+      - name: Test check
+        working-directory: src/frontend
+        run: |
+          npm run test
+
+      - name: Build
+        working-directory: src/frontend
+        run: |
+          npm run build
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3.5.0
+
+      - name: Build with Gradle
+        run: ./gradlew clean bootJar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Zip artifact for deployment
+        run: zip zucchini-launcher.zip .//build/libs/zucchini-launcher.jar
+
+      - name: Create Draft Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: major
+          release_name: Zucchini Launcher
+          draft: true
+          prerelease: false
+
+      - uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./zucchini-launcher.zip
+          asset_name: zucchini-launcher.zip
+          asset_content_type: application/zip
+
+      - uses: eregon/publish-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          release_id: ${{ steps.create_release.outputs.id }}

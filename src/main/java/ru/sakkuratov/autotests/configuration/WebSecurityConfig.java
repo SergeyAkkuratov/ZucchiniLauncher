@@ -2,9 +2,10 @@ package ru.sakkuratov.autotests.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,19 +18,30 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((requests) -> requests.requestMatchers("/", "/home").permitAll().anyRequest().authenticated())
-                .formLogin((form) -> form.loginPage("/login").permitAll()).logout(LogoutConfigurer::permitAll);
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((requests) ->
+                        requests
+                                .requestMatchers("/login").permitAll()
+                                .anyRequest().authenticated())
+                .formLogin(Customizer.withDefaults());
 
         return http.build();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("admin")
-                .password("{bcrypt}$2a$10$S57Wxq3Abj6WaXq5BzY5heCrYAgaHy5ZEqIO5zGWsb8LSXR8j.za.")
+        UserDetails user = User.builder()
+                .username("user")
+                .password("{bcrypt}$2a$10$4xT6ZND2OTSop8pcXLp74O7/0JV5vuUOyT9xPVZePktYdMCvfGHQi")
+                .roles("USER")
+                .build();
+
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password("{bcrypt}$2a$10$OWJB3jkVKeDSgLAtoVUs0.2ZwGy450ii/sAGvwvWqedcjUXbUMTHK")
                 .roles("ADMIN")
                 .build();
 
-        return new InMemoryUserDetailsManager(user);
+        return new InMemoryUserDetailsManager(user, admin);
     }
 }

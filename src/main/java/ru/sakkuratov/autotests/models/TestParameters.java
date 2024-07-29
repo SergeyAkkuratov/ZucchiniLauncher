@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +14,8 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 public class TestParameters {
+
+    static final String BASE_FEATURES_PATH = "features";
 
     private String priority;
     private String glue;
@@ -57,7 +60,7 @@ public class TestParameters {
             this.plugin.addAll(testParameters.getPlugin());
         }
         if (testParameters.getFeaturesPath() != null) {
-            this.featuresPath = testParameters.getFeaturesPath();
+            this.featuresPath = Paths.get(BASE_FEATURES_PATH, testParameters.getFeaturesPath()).toString();
         }
         if (testParameters.getOwner() != null) {
             this.owner = testParameters.getOwner();
