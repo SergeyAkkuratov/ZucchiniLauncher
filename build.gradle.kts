@@ -8,6 +8,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.2.2"
     id("io.spring.dependency-management") version "1.1.4"
+    id("maven-publish")
 }
 
 repositories {
@@ -59,4 +60,22 @@ tasks.named<Test>("test") {
 
 springBoot {
     mainClass = "ru.sakkuratov.autotests.ZucchiniLauncher"
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("bootJava") {
+            artifact(tasks.named("bootJar"))
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/SergeyAkkuratov/ZucchiniLauncher")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
