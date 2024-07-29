@@ -52,7 +52,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Zip artifact for deployment
-        run: zip zucchini-launcher.zip ./build/libs/* -r
+        run: |
+          zip zucchini-launcher.zip ./build/libs/* -r
+          echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
 
       - name: Create Draft Release
         id: create_release
@@ -60,8 +62,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Zucchini Launcher ${{ github.ref }}
+          tag_name: ${{ GITHUB_SHA_SHORT }}
+          release_name: Zucchini Launcher ${{ GITHUB_SHA_SHORT }}
           draft: true
           prerelease: false
 
