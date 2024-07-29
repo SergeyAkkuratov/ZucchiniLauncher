@@ -66,7 +66,7 @@ springBoot {
 
 publishing {
     publications {
-        create<MavenPublication>("ZucchiniLauncher") {
+        create<MavenPublication>("zucchini-launcher") {
             artifact(tasks.named("bootJar"))
         }
     }
