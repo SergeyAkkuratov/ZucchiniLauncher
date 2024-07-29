@@ -5,7 +5,7 @@ import taskSlice from "../../store/TaskSlice";
 import errorSlice from "../../store/ErrorSlice";
 import ConfirmWindow from "../ConfirmWindow/ConfirmWindow";
 import { removeTask } from "../../backendRequests/TasksRequests";
-import { Task, TaskType } from "../../store/StoreTypes";
+import { Task, TaskType, ZLError } from "../../store/StoreTypes";
 import TestDetails from "../TestDetails/TestDetails";
 import userSlice from "../../store/UserSlice";
 
@@ -32,17 +32,10 @@ export default function TaskTable(props: TaskTableProps) {
         if (confirm && currentTask?.id) {
             try {
                 await removeTask(currentTask.id);
+                dispatch(taskSlice.actions.removeTask({ id: currentTask.id, type: props.type }));
             } catch (error) {
-                if (error instanceof Error) {
-                    dispatch(
-                        errorSlice.actions.addError({
-                            name: "Couldn't remove task",
-                            message: `Couldn't remove task from queue!<br>${error.message}`,
-                        })
-                    );
-                }
+                dispatch(errorSlice.actions.addError(error as ZLError));
             }
-            dispatch(taskSlice.actions.removeTask({ id: currentTask.id, type: props.type }));
         }
     }
 
@@ -52,7 +45,7 @@ export default function TaskTable(props: TaskTableProps) {
 
     return (
         <>
-            <Table striped hover>
+            <Table striped hover data-testid="table-main">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -79,11 +72,11 @@ export default function TaskTable(props: TaskTableProps) {
                                     </Popover>
                                 }
                             >
-                                <tr key={index} data-testid={`row-id-${task.id}`} onClick={() => handleShowDetails(task)}>
-                                    <td>{task.startTime}</td>
-                                    <td>{task.parameters.owner}</td>
-                                    <td>{task.parameters.featuresPath}</td>
-                                    <td>{task.parameters.tags}</td>
+                                <tr key={index} data-testid={`row-${task.id}`} onClick={() => handleShowDetails(task)}>
+                                    <td data-testid={`row-${task.id}-startTime`}>{task.startTime}</td>
+                                    <td data-testid={`row-${task.id}-owner`}>{task.parameters.owner}</td>
+                                    <td data-testid={`row-${task.id}-featuresPath`}>{task.parameters.featuresPath}</td>
+                                    <td data-testid={`row-${task.id}-tags`}>{task.parameters.tags}</td>
                                     <td>
                                         {props.type === "queued" ? (
                                             <CloseButton
@@ -104,20 +97,20 @@ export default function TaskTable(props: TaskTableProps) {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan={6}>
+                            <td colSpan={6} data-testid="row-empty">
                                 <p className="text-center">EMPTY</p>
                             </td>
                         </tr>
                     )}
                 </tbody>
             </Table>
-            <Offcanvas show={show} onHide={handleCloseDetails} placement="bottom">
+            <Offcanvas show={show} onHide={handleCloseDetails} placement="bottom" data-testid="offcanvas-main">
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>
                         <Stack direction="horizontal" gap={3}>
                             <strong>Test Details</strong>
                             {props.type === "finished" && (
-                                <Button variant="success" onClick={openResults} className="me-auto">
+                                <Button variant="success" onClick={openResults} className="me-auto" data-testid="button-results">
                                     Open Results
                                 </Button>
                             )}

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react"
+import { render, screen } from "@testing-library/react";
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -17,12 +17,9 @@ describe("Feature Select tests", () => {
         User: initialUserState,
         Task: initialTaskState,
         Features: {
-            filenames: [
-                "test.feature",
-                "test2.feature"
-            ]
+            filenames: ["test.feature", "test2.feature"],
         },
-        Errors: initialErrorState
+        Errors: initialErrorState,
     };
     const mockStore = configureStore<RootState>();
     let store;
@@ -30,14 +27,16 @@ describe("Feature Select tests", () => {
     it("initial state", async () => {
         const user = userEvent.setup();
         let value = "placeholder";
-        const onChangeMock = jest.fn((event: React.ChangeEvent<HTMLSelectElement>) => {value = event.target.value});
+        const onChangeMock = jest.fn((event: React.ChangeEvent<HTMLSelectElement>) => {
+            value = event.target.value;
+        });
 
         store = mockStore(initialState);
         render(
             <Provider store={store}>
-                <FeatureSelect onChange={onChangeMock} value={value}/>
+                <FeatureSelect onChange={onChangeMock} value={value} />
             </Provider>
-        )
+        );
 
         expect(screen.getByTestId("select-feature")).toBeInTheDocument();
         expect(screen.getByTestId("select-placeholder")).toBeInTheDocument();
@@ -47,5 +46,5 @@ describe("Feature Select tests", () => {
         await user.selectOptions(screen.getByTestId("select-feature") as HTMLSelectElement, "test.feature");
         expect(onChangeMock).toHaveBeenCalled();
         expect(value).toBe("test.feature");
-    })
-})
+    });
+});

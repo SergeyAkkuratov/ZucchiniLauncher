@@ -11,17 +11,15 @@ describe("Test details component", () => {
             parameters: {
                 featuresPath: "testPath",
                 tags: "@TEST",
-                timeout: "10s"
-            }
-        }
-        render(
-            <TestDetails task={task} />
-        )
+                timeout: "10s",
+            },
+        };
+        render(<TestDetails task={task} />);
         expect(screen.getByTestId("row-test-featuresPath")).toBeInTheDocument();
         expect(screen.getByTestId("row-value-featuresPath").textContent).toBe("testPath");
         expect(screen.getByTestId("row-test-tags")).toBeInTheDocument();
         expect(screen.getByTestId("row-value-tags").textContent).toBe("@TEST");
         expect(screen.getByTestId("row-test-timeout")).toBeInTheDocument();
         expect(screen.getByTestId("row-value-timeout").textContent).toBe("10s");
-    })
-})
+    });
+});
