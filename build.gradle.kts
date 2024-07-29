@@ -11,6 +11,8 @@ plugins {
     id("maven-publish")
 }
 
+group = "ru.sakkuratov.autotests"
+
 repositories {
     maven {
         url = uri("https://dl.bintray.com/alfa-laboratory/maven-releases/")
@@ -64,7 +66,7 @@ springBoot {
 
 publishing {
     publications {
-        create<MavenPublication>("bootJava") {
+        create<MavenPublication>("ZucchiniLauncher") {
             artifact(tasks.named("bootJar"))
         }
     }
