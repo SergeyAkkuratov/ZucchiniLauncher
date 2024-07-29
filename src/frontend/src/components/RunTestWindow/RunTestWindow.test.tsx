@@ -79,4 +79,24 @@ describe("Run Test Window tests", () => {
         expect(screen.getByTestId("input-tags")).toHaveValue("");
         expect(screen.getByTestId("input-timeout")).toHaveValue("10S");
     })
+
+    it("test close buttons", async () => {
+        const user = userEvent.setup();
+        const addTaskFunction = jest.fn(() => {});
+        store = mockStore(initialState);
+        render(
+            <Provider store={store}>
+                <RunTestWindow showModal={true} addTaskFunction={addTaskFunction} />
+            </Provider>
+        )
+
+        await user.click(screen.getByTestId("button-close"));
+        expect(addTaskFunction).toHaveBeenCalledTimes(1);
+        expect(addTaskFunction).toHaveBeenCalledWith(true);
+
+        await user.click(screen.getByLabelText("Close"));
+        expect(addTaskFunction).toHaveBeenCalledTimes(2);
+        expect(addTaskFunction).toHaveBeenCalledWith(true);
+        
+    })
 })

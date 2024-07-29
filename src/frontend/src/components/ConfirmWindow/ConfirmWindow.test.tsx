@@ -68,8 +68,6 @@ describe("Run Confirm Window tests", () => {
             </Provider>
         )
 
-        screen.debug();
-
         await user.click(screen.getByTestId("button-confirm"));
         expect(closeModal).toHaveBeenCalledTimes(1);
         expect(closeModal).toHaveBeenCalledWith(true);

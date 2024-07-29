@@ -31,6 +31,7 @@ export default function AddNewFeature(props: AddNewFeatureProps) {
                             event.preventDefault();
                             addFeature(true);
                         }}
+                        data-testid="main-form"
                     >
                         <InputGroup className="mb-3">
                             <FormControl
@@ -40,16 +41,17 @@ export default function AddNewFeature(props: AddNewFeatureProps) {
                                 value={fileName}
                                 onChange={(event) => setFileName(event.target.value)}
                                 aria-describedby="fileNameInput"
+                                data-testid="input-filename"
                             />
                             <InputGroup.Text id="fileNameInput">.feature</InputGroup.Text>
                         </InputGroup>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => addFeature()}>
+                    <Button variant="secondary" onClick={() => addFeature()} data-testid="button-close">
                         Close
                     </Button>
-                    <Button variant="primary" type="submit" onClick={() => addFeature(true)}>
+                    <Button variant="primary" type="submit" onClick={() => addFeature(true)} data-testid="button-add">
                         Add
                     </Button>
                 </Modal.Footer>
