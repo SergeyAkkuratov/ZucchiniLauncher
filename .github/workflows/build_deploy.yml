@@ -60,8 +60,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: major
-          release_name: Zucchini Launcher
+          tag_name: ${{ github.ref }}
+          release_name: Zucchini Launcher ${{ github.ref }}
           draft: true
           prerelease: false
 
