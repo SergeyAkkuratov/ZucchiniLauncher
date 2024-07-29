@@ -11,9 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEventPublisher;
 import ru.sakkuratov.autotests.events.TestFinishedEvent;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static ru.sakkuratov.autotests.helpers.CommonHelpers.getStackTrace;
 
@@ -22,13 +23,15 @@ import static ru.sakkuratov.autotests.helpers.CommonHelpers.getStackTrace;
 public class CucumberTask implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(CucumberTask.class);
-    private final String id = UUID.randomUUID().toString();
+    private final Integer id;
+    private final String startTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
     private final TestParameters parameters = TestParameters.defaultParameters();
 
     @JsonIgnore
     private final ApplicationEventPublisher publisher;
 
-    public CucumberTask(TestParameters parameters, ApplicationEventPublisher publisher) {
+    public CucumberTask(Integer id, TestParameters parameters, ApplicationEventPublisher publisher) {
+        this.id = id;
         this.publisher = publisher;
         this.parameters.setParameters(parameters);
     }
@@ -64,8 +67,8 @@ public class CucumberTask implements Runnable {
         try {
             return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            logger.error("Couldn't parse CucumberTask to JSON. Error: " + getStackTrace(e));
-            return id;
+            logger.error("Couldn't parse CucumberTask to JSON. Error: {}", getStackTrace(e));
+            return String.valueOf(this.id);
         }
     }
 
