@@ -7,7 +7,7 @@ export default function About() {
     return (
         <>
             <Card>
-                <Card.Img variant="top" src={logo}/>
+                <Card.Img variant="top" src={logo} />
                 <Card.Body>
                     <Card.Title>ZuccchiniLauncher</Card.Title>
                     <Card.Text>Приложение для запуска, мониторинга и обработки результатов Cucumber тестов.</Card.Text>
