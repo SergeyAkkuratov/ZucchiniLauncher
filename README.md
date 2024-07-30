@@ -43,7 +43,13 @@
 ## Установка
 
 Для локального запуска приложения вам нужно скачать
-пакет [zucchini-launcher.jar](https://github.com/SergeyAkkuratov/ZucchiniLauncher/releases/tag/major) и запустить его:
+пакет [zucchini-launcher.jar](https://github.com/SergeyAkkuratov/ZucchiniLauncher/releases/tag/major).  
+Далее подготовить три папки:
+  - features - папка для .feature файлов. В неё тербуется сложить существующие .feature файлы. Так же в ней будут храниться файлы, созданные в ZucchiniLauncher.
+  - allure-results - папка для размещения результатов тестов в Allure формате
+  - allure-reports - папкв для размещения Allure Report
+
+После этого можно запускать приложение:
 
 ```bash
 java -jar zucchini-launcher.jar
@@ -51,13 +57,22 @@ java -jar zucchini-launcher.jar
 
 Приложение будет доступно по адресу http://localhost:8080/.
 
-Если вы хотите самостоятельно выполнить сборку приложения из исходного кода, то требуется склонировать проект и выполнить сборку через Gradle:
+Если вы хотите самостоятельно выполнить сборку приложения из исходного кода, то требуется склонировать проект и выполнить сборку frontend части через npm и backend части через Gradle.
+После чего выполнить подготовку и запуск как указано выше.:
 
 ```bash
+cd src\frontend
+npm run build
+cd ..\..
 gradlew clean bootJar
 ```
 
 Для использования Allure Report требуется запустить и настроить [allure-docker-service](https://github.com/fescobar/allure-docker-service).
+Пример запуска:
+```bash
+docker run -p 5050:5050 -e CHECK_RESULTS_EVERY_SECONDS=3 -e KEEP_HISTORY=1 -e KEEP_HISTORY_LATEST=10 -v ./allure-results:/app/allure-results  -v ./allure-reports:/app/default-reports frankescobar/allure-docker-service
+```
+
 
 ## Использование
 
@@ -110,9 +125,8 @@ gradlew clean bootJar
 Если изменить текст .feature файла - станет доступна кнопка "Save changes". Нажав её можно сохранить изменение на сервере.  
 Если же нажать "Cancel" - все изменения отменятся.
 
-Для создания нового .feature файла нужно нажать на стрелочку рядом с кнопкой "Save changes" и выбрать пункт "Add new feature". После этого откроется
-окно:
-![newFeature](./images/addNewFeature.png)
+Для создания нового .feature файла нужно нажать на стрелочку рядом с кнопкой "Save changes" и выбрать пункт "Add new feature". После этого откроется окно:  
+![newFeature](./images/addNewFeature.png)  
 В поле "File name" нужно ввести имя нового .feature файла (расширение указывать не нужно, оно подставится автоматически).
 
 Пользователь с ролью admin может так же удалять .feature файлы.
