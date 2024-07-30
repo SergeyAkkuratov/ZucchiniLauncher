@@ -8,4 +8,12 @@ public class CommonSteps {
     public void showMessage(String message) {
         System.out.println(message);
     }
+
+    @И("^выполнить ожидание в течение (\\d+) секунд$")
+    public void wait(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000L);
+        } catch (InterruptedException ignore) {
+        }
+    }
 }

@@ -7,8 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sakkuratov.autotests.models.TestParameters;
-import ru.sakkuratov.autotests.services.StabSystemTaskService;
-import ru.sakkuratov.autotests.services.StabTestWatcherService;
 import ru.sakkuratov.autotests.services.TestWatcher;
 
 import static ru.sakkuratov.autotests.helpers.CommonHelpers.getStackTrace;
@@ -23,12 +21,8 @@ public class TaskController {
 
     @Autowired
     private TestWatcher testWatcher;
-    @Autowired
-    private StabTestWatcherService stabTestWatcher;
-    @Autowired
-    private StabSystemTaskService systemTaskService;
 
-    @PostMapping("task/add")
+    @PostMapping("api/tasks/add")
     public ResponseEntity taskAdd(@RequestBody String body) {
         try {
             TestParameters parameters = new ObjectMapper().readValue(body, TestParameters.class);
@@ -38,15 +32,25 @@ public class TaskController {
         }
     }
 
-    @GetMapping("tasks")
+    @GetMapping("api/tasks")
     public ResponseEntity<Object> getStatus() {
-        Object result = stabTestWatcher.getStatus(null);
+        Object result = testWatcher.getStatus();
         return ResponseEntity.ok().headers(headers).body(result);
     }
 
-    @GetMapping("tasks/{id}")
+    @GetMapping("api/tasks/{id}")
     public ResponseEntity<Object> getStatus(@PathVariable String id) {
-        Object result = stabTestWatcher.getStatus(id);
+        Object result = testWatcher.getStatus(id);
         return ResponseEntity.ok().headers(headers).body(result);
+    }
+
+    @DeleteMapping("api/tasks/{id}")
+    public ResponseEntity<Object> removeTask(@PathVariable String id) {
+        try {
+            testWatcher.removeTask(id);
+            return ResponseEntity.ok().headers(headers).build();
+        } catch (Exception ex) {
+            return ResponseEntity.internalServerError().body("Task wasn't removed: " + getStackTrace(ex));
+        }
     }
 }

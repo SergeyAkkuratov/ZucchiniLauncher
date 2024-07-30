@@ -1,0 +1,1 @@
+docker run -p 5050:5050 -e CHECK_RESULTS_EVERY_SECONDS=3 -e KEEP_HISTORY=1 -e KEEP_HISTORY_LATEST=10 -v E:\_Study\IdeaProjects\ZucchiniLauncher\allure-results:/app/allure-results  -v E:\_Study\IdeaProjects\ZucchiniLauncher\allure-reports:/app/default-reports frankescobar/allure-docker-service

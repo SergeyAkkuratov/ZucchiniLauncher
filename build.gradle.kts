@@ -8,7 +8,10 @@ plugins {
     java
     id("org.springframework.boot") version "3.2.2"
     id("io.spring.dependency-management") version "1.1.4"
+    id("maven-publish")
 }
+
+group = "ru.sakkuratov.autotests"
 
 repositories {
     maven {
@@ -42,7 +45,7 @@ dependencies {
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -55,4 +58,26 @@ configurations {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+springBoot {
+    mainClass = "ru.sakkuratov.autotests.ZucchiniLauncher"
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("zucchini-launcher") {
+            artifact(tasks.named("bootJar"))
+        }
+    }
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/SergeyAkkuratov/ZucchiniLauncher")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }

@@ -20,4 +20,8 @@ public class StabTestWatcherService {
         if(null == id) return tests;
         return tests.stream().filter(test -> test.get("id").equals(id)).findAny().orElse(null);
     }
+
+    public void removeTask(String id) {
+        tests.removeIf(test -> test.get("id").equals(id));
+    }
 }
