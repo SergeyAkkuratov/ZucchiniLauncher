@@ -38,3 +38,12 @@ bin
 
 # Ignore test results
 allure-results
+/features/
+allure-reports
+src/main/resources/static/index.html
+src/main/resources/static/main.bundle.js
+src/main/resources/static/main.bundle.js.LICENSE.txt
+src/main/resources/static/runtime.bundle.js
+src/main/resources/static/zucchini.png
+src/main/resources/static/images/zucchini.png
+СКОПИРОВАТЬ СЕБЕ_16_9_Защита проекта_черная.pptx
